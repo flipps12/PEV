@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pulsera Electrónica Vibradora (PEV): proyecto escolar de tecnología que explora un dispositivo portátil de estimulación mediante vibraciones.">
+  <meta name="theme-color" content="#101a2e">
+  <title>PEV — Pulsera Electrónica Vibradora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+          colors: {
+            ink: '#101a2e',
+            navy: '#152641',
+            cyanx: '#55d6d2',
+            mist: '#f3f7fb'
+          },
+          boxShadow: {
+            soft: '0 20px 60px rgba(16, 26, 46, .10)',
+            glow: '0 0 70px rgba(85, 214, 210, .22)'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; }
+    h1,h2,h3,.display { font-family: 'Manrope', sans-serif; }
+    .hero-grid {
+      background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 92%);
+    }
+    .orb { filter: blur(1px); animation: float 7s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-12px) rotate(1deg); } }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .diagram-line { background: linear-gradient(90deg, #55d6d2, #7aa8ff); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body class="bg-mist text-ink antialiased selection:bg-cyanx/30">
+  <!-- Navigation -->
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-ink/90 text-white backdrop-blur-xl">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8" aria-label="Navegación principal">
+      <a href="#inicio" class="flex items-center gap-3" aria-label="PEV, ir al inicio">
+        <span class="grid h-10 w-10 place-items-center rounded-xl bg-cyanx text-ink">
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3v5a5 5 0 0 0 10 0V3M7 21v-5a5 5 0 0 1 10 0v5"/><path d="M3 12h3m12 0h3M10 12h4"/></svg>
+        </span>
+        <span><span class="block text-sm font-extrabold tracking-[.2em]">PEV</span><span class="block text-[10px] tracking-[.12em] text-slate-300">PROYECTO TECNOLÓGICO</span></span>
+      </a>
+      <div class="hidden items-center gap-7 text-sm text-slate-200 md:flex">
+        <a class="transition hover:text-cyanx" href="#proyecto">El proyecto</a>
+        <a class="transition hover:text-cyanx" href="#funcionamiento">Funcionamiento</a>
+        <a class="transition hover:text-cyanx" href="#componentes">Componentes</a>
+        <a class="transition hover:text-cyanx" href="#resultados">Resultados</a>
+      </div>
+      <button id="menuBtn" class="grid h-10 w-10 place-items-center rounded-xl border border-white/20 md:hidden" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </nav>
+    <div id="mobileMenu" class="hidden border-t border-white/10 px-5 py-4 md:hidden">
+      <div class="flex flex-col gap-4 text-sm text-slate-200">
+        <a href="#proyecto">El proyecto</a><a href="#funcionamiento">Funcionamiento</a><a href="#componentes">Componentes</a><a href="#resultados">Resultados</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="inicio" class="relative isolate overflow-hidden bg-ink pb-20 pt-32 text-white sm:pb-28 sm:pt-40">
+      <div class="hero-grid absolute inset-0 -z-10"></div>
+      <div class="orb absolute -right-24 top-24 -z-10 h-80 w-80 rounded-full bg-cyanx/15 blur-3xl sm:right-10 sm:h-[28rem] sm:w-[28rem]"></div>
+      <div class="absolute -bottom-32 left-0 -z-10 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl"></div>
+      <div class="mx-auto grid max-w-7xl items-center gap-14 px-5 lg:grid-cols-[1.08fr_.92fr] lg:px-8">
+        <div class="reveal">
+          <div class="mb-7 inline-flex items-center gap-2 rounded-full border border-cyanx/30 bg-cyanx/10 px-4 py-2 text-xs font-semibold tracking-wide text-cyanx">
+            <span class="h-2 w-2 rounded-full bg-cyanx"></span> FERIA DISTRITAL DE TECNOLOGÍA · 2026
+          </div>
+          <p class="mb-4 text-sm font-bold uppercase tracking-[.24em] text-slate-300">Tecnología aplicada al bienestar</p>
+          <h1 class="max-w-3xl text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-7xl">Una vibración.<br><span class="text-cyanx">Una nueva posibilidad.</span></h1>
+          <p class="mt-7 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">La Pulsera Electrónica Vibradora (PEV) es un prototipo portátil diseñado para generar estímulos mecánicos mediante pequeños motores vibradores.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href="#proyecto" class="inline-flex items-center justify-center gap-2 rounded-xl bg-cyanx px-6 py-3.5 font-bold text-ink transition hover:-translate-y-0.5 hover:bg-white">Conocer el proyecto <span aria-hidden="true">↗</span></a>
+            <a href="#funcionamiento" class="inline-flex items-center justify-center rounded-xl border border-white/20 px-6 py-3.5 font-semibold text-white transition hover:border-cyanx/70 hover:bg-white/5">Cómo funciona</a>
+          </div>
+          <div class="mt-12 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/10 pt-6 text-sm text-slate-300">
+            <div><span class="block text-xl font-extrabold text-white">2</span><span>Motores vibradores*</span></div>
+            <div><span class="block text-xl font-extrabold text-white">Portátil</span><span>Diseño para llevar puesto</span></div>
+            <div><span class="block text-xl font-extrabold text-white">Prototipo</span><span>En etapa de desarrollo</span></div>
+          </div>
+          <p class="mt-4 text-xs text-slate-500">*Según la descripción del informe del proyecto.</p>
+        </div>
+
+        <!-- Original illustrative product visualization -->
+        <div class="reveal relative mx-auto w-full max-w-xl">
+          <div class="absolute inset-8 rounded-full bg-cyanx/10 blur-3xl"></div>
+          <div class="relative overflow-hidden rounded-[2rem] border border-white/15 bg-white/[.06] p-4 shadow-glow backdrop-blur-sm sm:p-7">
+            <div class="flex items-center justify-between px-2 pb-5">
+              <div><p class="text-xs uppercase tracking-[.2em] text-slate-400">Concepto del dispositivo</p><p class="mt-1 font-bold">PEV · Pulsera vibradora</p></div>
+              <span class="rounded-full border border-cyanx/30 px-3 py-1 text-xs text-cyanx">Wearable</span>
+            </div>
+            <svg viewBox="0 0 560 420" class="w-full" role="img" aria-label="Ilustración conceptual de una pulsera electrónica con banda textil, dos módulos vibradores y un interruptor">
+              <defs>
+                <linearGradient id="strap" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2e405b"/><stop offset=".5" stop-color="#1a2c45"/><stop offset="1" stop-color="#0d1728"/></linearGradient>
+                <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4fbff"/><stop offset=".4" stop-color="#91a6bc"/><stop offset="1" stop-color="#d8e4ee"/></linearGradient>
+                <linearGradient id="module" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#243c59"/><stop offset="1" stop-color="#0c1727"/></linearGradient>
+                <filter id="shadow"><feGaussianBlur stdDeviation="8"/></filter>
+              </defs>
+              <ellipse cx="278" cy="338" rx="176" ry="24" fill="#000" opacity=".35" filter="url(#shadow)"/>
+              <g transform="translate(278 202) rotate(-22)">
+                <rect x="-100" y="-155" width="200" height="310" rx="86" fill="url(#strap)" stroke="#66829e" stroke-width="2"/>
+                <rect x="-82" y="-136" width="164" height="272" rx="68" fill="none" stroke="#607890" stroke-width="2" stroke-dasharray="5 7" opacity=".8"/>
+                <rect x="-111" y="-45" width="222" height="90" rx="27" fill="url(#module)" stroke="#7f9ab5" stroke-width="2"/>
+                <rect x="-95" y="-31" width="190" height="62" rx="19" fill="#101d30" stroke="#334f6c"/>
+                <circle cx="-48" cy="0" r="21" fill="#172a41" stroke="#55d6d2" stroke-width="2"/>
+                <circle cx="-48" cy="0" r="8" fill="#55d6d2"/>
+                <circle cx="48" cy="0" r="21" fill="#172a41" stroke="#55d6d2" stroke-width="2"/>
+                <circle cx="48" cy="0" r="8" fill="#55d6d2"/>
+                <rect x="-9" y="-6" width="18" height="12" rx="3" fill="url(#metal)"/>
+                <path d="M-135 -13h-28m28 26h-28M135 -13h28m-28 26h28" stroke="#55d6d2" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+              </g>
+              <g fill="none" stroke="#55d6d2" stroke-width="1.5" opacity=".9"><path d="M90 108H155L190 140"/><path d="M410 106H368L333 157"/><path d="M415 298H370L350 275"/></g>
+              <g fill="#55d6d2"><circle cx="190" cy="140" r="4"/><circle cx="333" cy="157" r="4"/><circle cx="350" cy="275" r="4"/></g>
+              <g font-family="DM Sans, sans-serif" font-size="13" fill="#e7f4ff"><text x="26" y="96">Banda textil</text><text x="384" y="92">Motores</text><text x="390" y="318">Interruptor</text></g>
+              <g stroke="#55d6d2" stroke-width="1.5" stroke-linecap="round" opacity=".8"><path d="M255 67q-10 -10 0 -20t0 -20"/><path d="M275 67q-10 -10 0 -20t0 -20"/><path d="M295 67q-10 -10 0 -20t0 -20"/></g>
+            </svg>
+            <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-ink/70 p-4">
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cyanx/15 text-cyanx"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h4l3-7 4 14 3-7h2"/></svg></span>
+              <p class="text-xs leading-5 text-slate-300">Ilustración conceptual para explicar el diseño. No es una fotografía del prototipo construido.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project -->
+    <section id="proyecto" class="scroll-mt-24 py-20 sm:py-28">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="reveal max-w-3xl">
+          <p class="text-sm font-bold uppercase tracking-[.2em] text-teal-700">01 · El proyecto</p>
+          <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">Tecnología que se lleva puesta.</h2>
+          <p class="mt-6 text-lg leading-8 text-slate-600">La PEV nace como una propuesta escolar para desarrollar un dispositivo electrónico pequeño y transportable que produzca vibraciones sobre una zona del cuerpo.</p>
+        </div>
+        <div class="mt-12 grid gap-5 md:grid-cols-3">
+          <article class="reveal rounded-3xl border border-slate-200 bg-white p-7 shadow-soft">
+            <span class="grid h-12 w-12 place-items-center rounded-2xl bg-cyanx/20 text-teal-800"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <h3 class="mt-6 text-xl font-extrabold">El desafío</h3>
+            <p class="mt-3 leading-7 text-slate-600">Explorar una herramienta portátil que genere estímulos mecánicos para personas con dificultades de movimiento.</p>
+          </article>
+          <article class="reveal rounded-3xl border border-slate-200 bg-white p-7 shadow-soft">
+            <span class="grid h-12 w-12 place-items-center rounded-2xl bg-blue-100 text-blue-800"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="4"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span>
+            <h3 class="mt-6 text-xl font-extrabold">La propuesta</h3>
+            <p class="mt-3 leading-7 text-slate-600">Una banda con componentes electrónicos y motores vibradores, pensada para colocarse sobre el cuerpo.</p>
+          </article>
+          <article class="reveal rounded-3xl border border-slate-200 bg-white p-7 shadow-soft">
+            <span class="grid h-12 w-12 place-items-center rounded-2xl bg-violet-100 text-violet-800"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4m0 10v4M3 12h4m10 0h4"/><circle cx="12" cy="12" r="5"/><path d="m9.5 12 1.7 1.7 3.4-3.4"/></svg></span>
+            <h3 class="mt-6 text-xl font-extrabold">La meta</h3>
+            <p class="mt-3 leading-7 text-slate-600">Comprobar el funcionamiento del prototipo y, en futuras etapas, estudiar si puede aportar a procesos de rehabilitación.</p>
+          </article>
+        </div>
+        <div class="reveal mt-8 rounded-3xl bg-ink p-7 text-white sm:p-10">
+          <div class="grid gap-6 md:grid-cols-[.4fr_1fr] md:items-center">
+            <p class="text-sm font-bold uppercase tracking-[.2em] text-cyanx">La idea central</p>
+            <p class="text-xl font-semibold leading-8 sm:text-2xl">Generar vibraciones es el primer paso. Determinar si esas vibraciones ayudan en una rehabilitación requiere pruebas adicionales.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="funcionamiento" class="scroll-mt-24 bg-white py-20 sm:py-28">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="reveal mx-auto max-w-3xl text-center">
+          <p class="text-sm font-bold uppercase tracking-[.2em] text-teal-700">02 · Funcionamiento</p>
+          <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">De energía eléctrica a vibración.</h2>
+          <p class="mt-5 text-lg leading-8 text-slate-600">El circuito alimenta los motores y permite que la pulsera genere un estímulo mecánico cuando está encendida.</p>
+        </div>
+        <div class="reveal mt-14 grid gap-4 md:grid-cols-4">
+          <article class="relative rounded-3xl border border-slate-200 bg-mist p-6">
+            <span class="text-xs font-extrabold tracking-[.2em] text-teal-700">PASO 01</span>
+            <div class="mt-5 grid h-14 w-14 place-items-center rounded-2xl bg-white text-ink shadow-sm"><svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="7" width="16" height="10" rx="2"/><path d="M8 7V5h8v2M8 12h3m2 0h3"/></svg></div>
+            <h3 class="mt-5 text-lg font-extrabold">Alimentación</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">La pila suministra la energía eléctrica que necesita el circuito.</p>
+          </article>
+          <article class="relative rounded-3xl border border-slate-200 bg-mist p-6">
+            <span class="text-xs font-extrabold tracking-[.2em] text-teal-700">PASO 02</span>
+            <div class="mt-5 grid h-14 w-14 place-items-center rounded-2xl bg-white text-ink shadow-sm"><svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 4v6a5 5 0 0 0 10 0V4M7 20v-6a5 5 0 0 1 10 0v6"/></svg></div>
+            <h3 class="mt-5 text-lg font-extrabold">Control</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">El interruptor abre o cierra el circuito para encender o apagar.</p>
+          </article>
+          <article class="relative rounded-3xl border border-slate-200 bg-mist p-6">
+            <span class="text-xs font-extrabold tracking-[.2em] text-teal-700">PASO 03</span>
+            <div class="mt-5 grid h-14 w-14 place-items-center rounded-2xl bg-white text-ink shadow-sm"><svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12h4l3-7 4 14 3-7h2"/></svg></div>
+            <h3 class="mt-5 text-lg font-extrabold">Movimiento</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">La corriente llega a los motores y estos producen vibraciones.</p>
+          </article>
+          <article class="relative rounded-3xl border border-teal-200 bg-teal-50 p-6">
+            <span class="text-xs font-extrabold tracking-[.2em] text-teal-800">PASO 04</span>
+            <div class="mt-5 grid h-14 w-14 place-items-center rounded-2xl bg-white text-teal-800 shadow-sm"><svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 9q4 0 4 3t4 3 4-3 4-3M4 15q4 0 4 3t4 0 4-3 4-3"/></svg></div>
+            <h3 class="mt-5 text-lg font-extrabold">Estímulo</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">La vibración se transmite a la piel en la zona donde se coloca la pulsera.</p>
+          </article>
+        </div>
+        <p class="reveal mt-6 text-center text-sm text-slate-500">Esquema funcional simplificado. El informe no especifica el diagrama eléctrico detallado.</p>
+      </div>
+    </section>
+
+    <!-- Components -->
+    <section id="componentes" class="scroll-mt-24 py-20 sm:py-28">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="reveal max-w-3xl">
+          <p class="text-sm font-bold uppercase tracking-[.2em] text-teal-700">03 · Materiales</p>
+          <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">Cada pieza tiene una función.</h2>
+          <p class="mt-5 text-lg leading-8 text-slate-600">El prototipo se describe con componentes electrónicos básicos y materiales textiles para sostenerlos cómodamente.</p>
+        </div>
+        <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <article class="reveal rounded-3xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-soft">
+            <div class="flex items-start justify-between"><span class="grid h-12 w-12 place-items-center rounded-2xl bg-cyanx/20 text-teal-800"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/><path d="M12 4v3m8 5h-3M12 20v-3M4 12h3"/></svg></span><span class="text-xs font-bold text-slate-400">01</span></div>
+            <h3 class="mt-5 text-xl font-extrabold">Motor vibrador mini</h3><p class="mt-2 leading-7 text-slate-600">Es el elemento que genera las vibraciones que se transmiten a la zona de contacto.</p>
+          </article>
+          <article class="reveal rounded-3xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-soft">
+            <div class="flex items-start justify-between"><span class="grid h-12 w-12 place-items-center rounded-2xl bg-blue-100 text-blue-800"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 3v6a5 5 0 0 0 10 0V3M7 21v-6a5 5 0 0 1 10 0v6"/></svg></span><span class="text-xs font-bold text-slate-400">02</span></div>
+            <h3 class="mt-5 text-xl font-extrabold">Interruptor</h3><p class="mt-2 leading-7 text-slate-600">Permite encender y apagar la pulsera al controlar el paso de corriente.</p>
+          </article>
+          <article class="reveal rounded-3xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-soft">
+            <div class="flex items-start justify-between"><span class="grid h-12 w-12 place-items-center rounded-2xl bg-amber-100 text-amber-800"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="7" width="17" height="10" rx="2"/><path d="M20 10h2v4h-2M7 10v4m4-4v4"/></svg></span><span class="text-xs font-bold text-slate-400">03</span></div>
+            <h3 class="mt-5 text-xl font-extrabold">Pila</h3><p class="mt-2 leading-7 text-slate-600">Almacena energía química y la transforma en energía eléctrica para alimentar el sistema.</p>
+          </article>
+          <article class="reveal rounded-3xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-soft">
+            <div class="flex items-start justify-between"><span class="grid h-12 w-12 place-items-center rounded-2xl bg-violet-100 text-violet-800"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 8h7v8H4zM13 8h7v8h-7zM11 12h2"/></svg></span><span class="text-xs font-bold text-slate-400">04</span></div>
+            <h3 class="mt-5 text-xl font-extrabold">Cables conductores</h3><p class="mt-2 leading-7 text-slate-600">Conectan los componentes y transportan la corriente desde la fuente de alimentación.</p>
+          </article>
+          <article class="reveal rounded-3xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-soft">
+            <div class="flex items-start justify-between"><span class="grid h-12 w-12 place-items-center rounded-2xl bg-rose-100 text-rose-800"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v14H4z"/><path d="M7 8h10M7 11h10M7 14h10M7 17h10"/></svg></span><span class="text-xs font-bold text-slate-400">05</span></div>
+            <h3 class="mt-5 text-xl font-extrabold">Velcro</h3><p class="mt-2 leading-7 text-slate-600">Facilita ajustar, cerrar y retirar la banda alrededor de la zona de uso.</p>
+          </article>
+          <article class="reveal rounded-3xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-soft">
+            <div class="flex items-start justify-between"><span class="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-100 text-emerald-800"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7 12 3l8 4v10l-8 4-8-4z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></span><span class="text-xs font-bold text-slate-400">06</span></div>
+            <h3 class="mt-5 text-xl font-extrabold">Tela y banda</h3><p class="mt-2 leading-7 text-slate-600">Mantiene los componentes en su lugar y busca que el dispositivo resulte cómodo de llevar.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Methodology/results -->
+    <section id="resultados" class="scroll-mt-24 bg-ink py-20 text-white sm:py-28">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
+          <div class="reveal">
+            <p class="text-sm font-bold uppercase tracking-[.2em] text-cyanx">04 · Pruebas y resultados</p>
+            <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">Un prototipo en evolución.</h2>
+            <p class="mt-6 leading-8 text-slate-300">El informe describe una etapa inicial de desarrollo. Se verificó la generación de vibraciones, pero aún hace falta ampliar las pruebas para evaluar el desempeño y cualquier posible utilidad en rehabilitación.</p>
+            <div class="mt-8 rounded-2xl border border-white/10 bg-white/5 p-5">
+              <p class="text-sm font-bold text-cyanx">Importante</p>
+              <p class="mt-2 text-sm leading-6 text-slate-300">El documento no informa resultados de pruebas clínicas ni demuestra que la pulsera recupere la movilidad. La utilidad terapéutica queda como una posibilidad a investigar.</p>
+            </div>
+          </div>
+          <div class="reveal space-y-4">
+            <article class="rounded-2xl border border-white/10 bg-white/[.06] p-6 sm:p-7">
+              <div class="flex gap-4">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-400/15 text-emerald-300"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m5 12 4 4L19 6"/></svg></span>
+                <div><h3 class="text-lg font-extrabold">Lo observado</h3><p class="mt-2 leading-7 text-slate-300">Los motores funcionan y producen vibraciones cuando la pulsera está en contacto con la piel del brazo.</p></div>
+              </div>
+            </article>
+            <article class="rounded-2xl border border-white/10 bg-white/[.06] p-6 sm:p-7">
+              <div class="flex gap-4">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-amber-400/15 text-amber-200"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></span>
+                <div><h3 class="text-lg font-extrabold">Lo que falta medir</h3><p class="mt-2 leading-7 text-slate-300">Autonomía de la batería, duración de la vibración, intensidad, estabilidad de las conexiones y opiniones de quienes la prueben.</p></div>
+              </div>
+            </article>
+            <article class="rounded-2xl border border-white/10 bg-white/[.06] p-6 sm:p-7">
+              <div class="flex gap-4">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-blue-400/15 text-blue-200"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h16M8 15l3-4 3 2 5-7"/></svg></span>
+                <div><h3 class="text-lg font-extrabold">Próximas etapas</h3><p class="mt-2 leading-7 text-slate-300">Mejorar el diseño, cuantificar el funcionamiento y, con supervisión profesional, estudiar su respuesta en condiciones apropiadas.</p></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Future -->
+    <section class="py-20 sm:py-28">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="reveal grid gap-10 overflow-hidden rounded-[2rem] bg-gradient-to-br from-teal-50 via-white to-blue-50 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[.2em] text-teal-700">05 · Próximos pasos</p>
+            <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">Medir, aprender y mejorar.</h2>
+            <p class="mt-5 leading-8 text-slate-600">La siguiente etapa consiste en recopilar datos para comprender mejor el rendimiento de la pulsera y detectar oportunidades de mejora.</p>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white/80 p-4"><span class="grid h-9 w-9 place-items-center rounded-xl bg-teal-100 font-extrabold text-teal-800">1</span><span class="font-semibold">Medir la duración de la batería</span></div>
+            <div class="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white/80 p-4"><span class="grid h-9 w-9 place-items-center rounded-xl bg-teal-100 font-extrabold text-teal-800">2</span><span class="font-semibold">Evaluar intensidad y estabilidad</span></div>
+            <div class="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white/80 p-4"><span class="grid h-9 w-9 place-items-center rounded-xl bg-teal-100 font-extrabold text-teal-800">3</span><span class="font-semibold">Mejorar comodidad y conexiones</span></div>
+            <div class="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white/80 p-4"><span class="grid h-9 w-9 place-items-center rounded-xl bg-teal-100 font-extrabold text-teal-800">4</span><span class="font-semibold">Investigar posibles usos con supervisión profesional</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team / source -->
+    <section class="border-t border-slate-200 bg-white py-16">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <div class="grid gap-10 md:grid-cols-2">
+          <div class="reveal">
+            <p class="text-sm font-bold uppercase tracking-[.2em] text-teal-700">El equipo</p>
+            <h2 class="mt-3 text-2xl font-extrabold">5.º 1.ª · Informática IPP</h2>
+            <ul class="mt-5 space-y-2 text-slate-600">
+              <li>Agustín Aveggio</li><li>Valentina Aveggio</li><li>Facundo Choque</li><li>Yadhira Fajardo</li><li>Esmeralda Orga</li>
+            </ul>
+          </div>
+          <div class="reveal">
+            <p class="text-sm font-bold uppercase tracking-[.2em] text-teal-700">Institución</p>
+            <h2 class="mt-3 text-2xl font-extrabold">Escuela de Educación Secundaria Técnica N.º 1</h2>
+            <p class="mt-3 leading-7 text-slate-600">“República del Paraguay” · Ituzaingó, Provincia de Buenos Aires.</p>
+            <p class="mt-4 text-sm text-slate-500">Docente a cargo del informe: profesora Stella Sánchez.</p>
+            <p class="mt-2 text-sm text-slate-500">Proyecto presentado en agosto de 2026.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing -->
+    <section class="bg-ink px-5 py-16 text-center text-white sm:py-20">
+      <div class="mx-auto max-w-3xl reveal">
+        <span class="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-cyanx text-ink"><svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3v5a5 5 0 0 0 10 0V3M7 21v-5a5 5 0 0 1 10 0v5"/><path d="M3 12h3m12 0h3M10 12h4"/></svg></span>
+        <h2 class="mt-6 text-3xl font-extrabold sm:text-4xl">PEV: un proyecto que sigue en desarrollo.</h2>
+        <p class="mx-auto mt-4 max-w-2xl leading-7 text-slate-300">Una propuesta de tecnología escolar que combina electrónica, diseño portátil y la intención de explorar nuevas herramientas de estimulación.</p>
+        <a href="#inicio" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-bold text-ink transition hover:bg-cyanx">Volver al inicio ↑</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/10 bg-ink px-5 py-6 text-center text-xs text-slate-400">
+    <p>PEV · Pulsera Electrónica Vibradora · Feria Distrital de Tecnología · 2026</p>
+    <p class="mt-2">Contenido basado en el informe del proyecto. No constituye una recomendación ni una validación médica.</p>
+  </footer>
+
+  <script>
+    // Mobile navigation
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', String(!isOpen));
+      mobileMenu.classList.toggle('hidden', isOpen);
+      menuBtn.setAttribute('aria-label', isOpen ? 'Abrir menú' : 'Cerrar menú');
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.setAttribute('aria-label', 'Abrir menú');
+    }));
+
+    // Scroll reveal with an accessible reduced-motion fallback
+    const revealItems = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealItems.forEach(item => observer.observe(item));
+    } else {
+      revealItems.forEach(item => item.classList.add('visible'));
+    }
+  </script>
+</body>
+</html>
